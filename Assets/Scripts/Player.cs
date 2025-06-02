@@ -18,7 +18,9 @@ public class Player : MonoBehaviour
 	[SerializeField] private GameObject _tripleLaserPrefab;
 
 	private bool _isSpeedPowerupActive = false;
-	[SerializeField] private GameObject _speedPowerupPrefab;
+	private bool _isShieldPowerupActive = false;
+
+	[SerializeField] private GameObject _shield;
 
 
 
@@ -92,13 +94,23 @@ public class Player : MonoBehaviour
 
 	public void Damage()
 	{
-		_lives--;
-
-		if (_lives < 1)
+		if (_isShieldPowerupActive == true) 
 		{
-			_spawnManager.OnPlayerDeath();
-			Destroy(this.gameObject);
+			_isShieldPowerupActive = false;
+			_shield.SetActive(false);
 		}
+		else
+		{
+			_lives--;
+
+			if (_lives < 1)
+			{
+				_spawnManager.OnPlayerDeath();
+				Destroy(this.gameObject);
+			}
+		}
+
+		
 	}
 
 
@@ -126,5 +138,11 @@ public class Player : MonoBehaviour
 		yield return new WaitForSeconds(5.0f);
 		_isSpeedPowerupActive = false;
 		_speed /= _speedMultiplier;
+	}
+
+	public void ShieldPowerupActive()
+	{
+		_shield.SetActive(true);
+		_isShieldPowerupActive = true;
 	}
 }

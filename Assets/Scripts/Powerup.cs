@@ -30,7 +30,7 @@ public class Powerup : MonoBehaviour
 						player.SpeedPowerupActive();
 						break;
 					case 2:
-						Debug.Log("Shield Powerup!");
+						player.ShieldPowerupActive();
 						break;
 					default:
 						Debug.Log("DEFAULT VALUE !");
