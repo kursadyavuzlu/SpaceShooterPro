@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -11,6 +12,16 @@ public class Player : MonoBehaviour
 	[SerializeField] private int _lives = 3;
 
 	private SpawnManager _spawnManager;
+
+	private bool _isTripleShotActive = false;
+	[SerializeField] private GameObject _tripleLaserPrefab;
+
+
+
+
+
+
+
 
 	private void Awake()
 	{
@@ -62,7 +73,17 @@ public class Player : MonoBehaviour
 	{
 		_canFire = Time.time + _fireRate;
 		Vector3 offset = new Vector3(0f, 0.8f, 0f);
-		Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+		
+
+		if (_isTripleShotActive == true)
+		{
+			Instantiate(_tripleLaserPrefab, transform.position + offset, Quaternion.identity);
+		}
+		else 
+		{
+			Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
+		}
+
 	}
 
 	public void Damage()
@@ -74,5 +95,18 @@ public class Player : MonoBehaviour
 			_spawnManager.OnPlayerDeath();
 			Destroy(this.gameObject);
 		}
+	}
+
+
+	public void TripleShotActive()
+	{
+		_isTripleShotActive = true;
+		StartCoroutine(TripleShotPowerDownRoutine());
+	}
+
+	IEnumerator TripleShotPowerDownRoutine()
+	{
+		yield return new WaitForSeconds(5.0f);
+		_isTripleShotActive = false;
 	}
 }
