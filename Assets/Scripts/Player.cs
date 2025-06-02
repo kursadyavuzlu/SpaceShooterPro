@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
 	{
 		_spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
 
-		if (_spawnManager != null) 
+		if (_spawnManager == null)
 		{
 			Debug.LogError("The Spawn Manager is NULL !!! ");
 		}
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
 	void FireLaser()
 	{
 		_canFire = Time.time + _fireRate;
-		Vector3 offset = new Vector3(0f, 0.7f, 0f);
+		Vector3 offset = new Vector3(0f, 0.8f, 0f);
 		Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
 	}
 
