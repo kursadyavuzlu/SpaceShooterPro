@@ -4,6 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 	[SerializeField] private float _speed = 1.0f;
+	private float _speedMultiplier = 2.5f;
 	[SerializeField] private GameObject _laserPrefab;
 
 	[SerializeField] private float _fireRate = 0.5f;
@@ -16,6 +17,9 @@ public class Player : MonoBehaviour
 	private bool _isTripleShotActive = false;
 	[SerializeField] private GameObject _tripleLaserPrefab;
 
+	private bool _isSpeedPowerupActive = false;
+	[SerializeField] private GameObject _speedPowerupPrefab;
+
 
 
 
@@ -25,7 +29,7 @@ public class Player : MonoBehaviour
 
 	private void Awake()
 	{
-		transform.position = new Vector3(0f, 0f , 0f);
+		transform.position = new Vector3(0f, 0f, 0f);
 	}
 
 	private void Start()
@@ -42,7 +46,7 @@ public class Player : MonoBehaviour
 	{
 		CalculateMovement();
 
-		if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire) 
+		if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
 		{
 			FireLaser();
 		}
@@ -73,13 +77,13 @@ public class Player : MonoBehaviour
 	{
 		_canFire = Time.time + _fireRate;
 		Vector3 offset = new Vector3(0f, 0.8f, 0f);
-		
+
 
 		if (_isTripleShotActive == true)
 		{
 			Instantiate(_tripleLaserPrefab, transform.position + offset, Quaternion.identity);
 		}
-		else 
+		else
 		{
 			Instantiate(_laserPrefab, transform.position + offset, Quaternion.identity);
 		}
@@ -108,5 +112,19 @@ public class Player : MonoBehaviour
 	{
 		yield return new WaitForSeconds(5.0f);
 		_isTripleShotActive = false;
+	}
+
+	public void SpeedPowerupActive()
+	{
+		_isSpeedPowerupActive = true;
+		_speed *= _speedMultiplier;
+		StartCoroutine(SpeedPowerDownRoutine());
+	}
+
+	IEnumerator SpeedPowerDownRoutine()
+	{
+		yield return new WaitForSeconds(5.0f);
+		_isSpeedPowerupActive = false;
+		_speed /= _speedMultiplier;
 	}
 }
