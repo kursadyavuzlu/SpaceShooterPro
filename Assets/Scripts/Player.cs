@@ -22,6 +22,8 @@ public class Player : MonoBehaviour
 
 	[SerializeField] private GameObject _shield;
 
+	[SerializeField] private GameObject _rightEngine, _leftEngine;
+
 	[SerializeField] private int _score;
 
 	private UIManager _uiManager;
@@ -103,24 +105,29 @@ public class Player : MonoBehaviour
 
 	public void Damage()
 	{
-		if (_isShieldPowerupActive == true) 
+		if (_isShieldPowerupActive == true)
 		{
 			_isShieldPowerupActive = false;
 			_shield.SetActive(false);
 		}
-		else
+		_lives--;
+
+		if(_lives == 2)
 		{
-			_lives--;
-			_uiManager.UpdateLives(_lives);
-
-			if (_lives < 1)
-			{
-				_spawnManager.OnPlayerDeath();
-				Destroy(this.gameObject);
-			}
+			_leftEngine.SetActive(true);
 		}
-
+		else if(_lives == 1)
+		{
+			_rightEngine.SetActive(true);
+		}
 		
+		_uiManager.UpdateLives(_lives);
+		
+		if (_lives < 1)
+		{
+			_spawnManager.OnPlayerDeath();
+			Destroy(this.gameObject);
+		}
 	}
 
 
