@@ -4,7 +4,12 @@ public class Enemy : MonoBehaviour
 {
 	private float _speed = 5f;
 
+	private Player _player;
 
+	private void Awake()
+	{
+		_player = GameObject.Find("Player").GetComponent<Player>();
+	}
 
 	private void Update()
 	{
@@ -34,7 +39,14 @@ public class Enemy : MonoBehaviour
 		else if(other.CompareTag("Laser"))
 		{
 			Destroy(other.gameObject);
+
+			if (_player != null)
+			{
+				_player.AddScore(10);
+			}
+
 			Destroy(this.gameObject);
+			
 		}
 	}
 
